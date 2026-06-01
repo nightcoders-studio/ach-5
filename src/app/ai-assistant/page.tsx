@@ -11,23 +11,23 @@ interface Message {
 }
 
 const moodItems = [
-  { id: 'happy',     emoji: '😊', label: 'Happy',     query: 'Gw lagi happy banget nih! Ada rekomendasi menu manis atau segar buat merayakan hari ini?' },
-  { id: 'ngantuk',   emoji: '😴', label: 'Ngantuk',   query: 'Ngantuk banget gw... Tolong pilihin kopi paling kuat, pahit, dan bisa bikin melek instant!' },
-  { id: 'belajar',   emoji: '📚', label: 'Belajar',   query: 'Lagi mau belajar serius. Butuh menu minuman biar fokus tapi gak terlalu manis/berat.' },
-  { id: 'kerja',     emoji: '💻', label: 'Kerja',     query: 'Lagi produktif kerja nih. Mau rekomendasi kopi mantap plus cemilan gurih buat nemenin kerja!' },
-  { id: 'nongkrong', emoji: '👥', label: 'Nongkrong', query: 'Lagi nongkrong santai bareng temen. Rekomendasiin snack asin/manis plus minuman segar!' },
+  { id: 'happy',     emoji: '😊', label: 'Happy',     query: 'Aku lagi bahagia sekali hari ini! Ada rekomendasi menu manis atau segar buat merayakan hari ini?' },
+  { id: 'ngantuk',   emoji: '😴', label: 'Ngantuk',   query: 'Aku mengantuk sekali... Tolong pilihkan kopi paling kuat, pahit, dan bisa membuat melek instan!' },
+  { id: 'belajar',   emoji: '📚', label: 'Belajar',   query: 'Aku ingin belajar serius. Butuh menu minuman agar fokus tapi tidak terlalu manis atau berat.' },
+  { id: 'kerja',     emoji: '💻', label: 'Kerja',     query: 'Aku sedang produktif kerja. Mau rekomendasi kopi mantap plus camilan gurih buat menemani kerja!' },
+  { id: 'nongkrong', emoji: '👥', label: 'Nongkrong', query: 'Aku sedang nongkrong santai bersama teman-teman. Rekomendasikan camilan gurih atau manis plus minuman segar!' },
 ];
 
 const suggestionChips = [
-  { label: 'Saya suka manis',   query: 'Gw suka menu yang manis-manis, tolong kasih rekomendasi dong!' },
-  { label: 'Budget 25 Ribu',    query: 'Gw ada budget 25 ribu rupiah. Menu KUPITA apa aja yang pas di dompet gw?' },
-  { label: 'Tidak suka kopi',   query: 'Gw gak suka kopi atau kafein. Kasih tahu dong menu non-kopi yang paling best seller!' },
-  { label: 'Rekomendasi baru',  query: 'Ada menu baru apa aja di KUPITA yang wajib gw coba hari ini?' },
+  { label: 'Saya suka manis',   query: 'Aku suka menu yang manis-manis, tolong berikan rekomendasi dong!' },
+  { label: 'Budget 25 Ribu',    query: 'Aku ada budget 25 ribu rupiah. Menu KUPITA apa saja yang pas di dompetku?' },
+  { label: 'Tidak suka kopi',   query: 'Aku tidak suka kopi atau kafein. Beritahu aku menu non-kopi yang paling best seller!' },
+  { label: 'Rekomendasi baru',  query: 'Ada menu baru apa saja di KUPITA yang wajib aku coba hari ini?' },
 ];
 
 const INITIAL_MESSAGE: Message = {
   sender: 'ai',
-  text: `Hai! Gw AI assistant KUPITA 👋\n\nGw bisa bantu kamu:\n• Pilih menu sesuai selera & mood hari ini\n• Cari menu sesuai budget kantongmu\n• Rekomendasikan kombinasi minuman & cemilan terbaik\n\nMau mulai dari mana? Ceritain aja preferensimu di bawah, atau langsung klik emoji mood atau saran pertanyaan di atas ya! 😊`,
+  text: `Halo Rakan! Aku AI assistant KUPITA.\n\nAku bisa membantu kamu:\n• Memilih menu sesuai selera & mood hari ini\n• Mencari menu yang sesuai dengan budget kamu\n• Merekomendasikan kombinasi minuman & camilan terbaik\n\nMau mulai dari mana? Ceritakan saja preferensimu di bawah, atau langsung klik emoji mood atau saran pertanyaan di atas ya!`,
 };
 
 export default function AIAssistantPage() {
