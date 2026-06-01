@@ -270,20 +270,23 @@ export default function ReservasiPage() {
                 <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-text-secondary)', display: 'block', marginBottom: 6 }}>
                   Tanggal <span style={{ color: 'var(--color-error)' }}>*</span>
                 </label>
-                <input
-                  type="date"
-                  value={form.tanggal}
-                  min={getTodayStr()}
-                  max={getMaxDateStr()}
-                  onChange={e => setField('tanggal', e.target.value)}
-                  style={{
-                    width: '100%', height: 44, padding: '0 10px',
-                    border: `1.5px solid ${errors.tanggal ? 'var(--color-error)' : 'var(--color-border)'}`,
-                    borderRadius: 10, fontSize: 13, background: 'var(--color-bg-elevated)',
-                    outline: 'none', color: 'var(--color-text-primary)',
-                    boxSizing: 'border-box',
-                  }}
-                />
+                <div style={{ position: 'relative' }}>
+                  <Calendar size={14} color="var(--color-text-muted)" style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
+                  <input
+                    type="date"
+                    value={form.tanggal}
+                    min={getTodayStr()}
+                    max={getMaxDateStr()}
+                    onChange={e => setField('tanggal', e.target.value)}
+                    style={{
+                      width: '100%', height: 44, paddingLeft: 30, paddingRight: 10,
+                      border: `1.5px solid ${errors.tanggal ? 'var(--color-error)' : 'var(--color-border)'}`,
+                      borderRadius: 10, fontSize: 13, background: 'var(--color-bg-elevated)',
+                      outline: 'none', color: form.tanggal ? 'var(--color-text-primary)' : 'var(--color-text-muted)',
+                      boxSizing: 'border-box',
+                    }}
+                  />
+                </div>
                 {errors.tanggal && <p style={{ fontSize: 11, color: 'var(--color-error)', marginTop: 4 }}>{errors.tanggal}</p>}
               </div>
 
@@ -313,10 +316,23 @@ export default function ReservasiPage() {
                 {errors.waktu && <p style={{ fontSize: 11, color: 'var(--color-error)', marginTop: 4 }}>{errors.waktu}</p>}
               </div>
             </div>
-            {form.tanggal && (
-              <p style={{ fontSize: 11, color: 'var(--color-primary)', marginTop: 8, fontWeight: 600 }}>
-                📅 {formatTanggalDisplay(form.tanggal)}
-              </p>
+            {(form.tanggal || form.waktu) && (
+              <div style={{
+                marginTop: 10,
+                padding: '8px 12px',
+                background: 'var(--color-primary-light)',
+                borderRadius: 8,
+                border: '1px solid #FDE68A',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+              }}>
+                <span style={{ fontSize: 13 }}>📅</span>
+                <span style={{ fontSize: 12, color: '#92400E', fontWeight: 650 }}>
+                  Rencana Datang: {form.tanggal ? formatTanggalDisplay(form.tanggal) : 'Belum pilih tanggal'}
+                  {form.waktu ? ` pukul ${form.waktu} WIB` : ''}
+                </span>
+              </div>
             )}
           </div>
 

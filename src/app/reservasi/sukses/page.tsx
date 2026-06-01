@@ -192,27 +192,45 @@ function SuksesContent() {
             </h2>
           </div>
           <div style={{ padding: '4px 0' }}>
-            {detailItems.map(({ icon: Icon, label, value }, i) => (
-              <div key={i} style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: 12,
-                padding: '12px 16px',
-                borderBottom: i < detailItems.length - 1 ? '1px solid var(--color-border)' : 'none',
-              }}>
-                <div style={{
-                  width: 32, height: 32, borderRadius: 8,
-                  background: 'var(--color-primary-light)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+            {detailItems.map(({ icon: Icon, label, value }, i) => {
+              const isDateTime = label === 'Tanggal & Waktu';
+              return (
+                <div key={i} style={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  gap: 12,
+                  padding: '12px 16px',
+                  borderBottom: i < detailItems.length - 1 ? '1px solid var(--color-border)' : 'none',
+                  background: isDateTime ? '#FEF3C7' : 'transparent', // light warm amber background
                 }}>
-                  <Icon size={15} color="var(--color-primary)" />
+                  <div style={{
+                    width: 32, height: 32, borderRadius: 8,
+                    background: isDateTime ? 'var(--color-primary)' : 'var(--color-primary-light)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+                    transition: 'all 0.2s ease',
+                  }}>
+                    <Icon size={15} color={isDateTime ? 'white' : 'var(--color-primary)'} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ 
+                      fontSize: 11, 
+                      color: isDateTime ? 'var(--color-primary)' : 'var(--color-text-muted)', 
+                      margin: '0 0 1px', 
+                      fontWeight: isDateTime ? 700 : 500,
+                      textTransform: isDateTime ? 'uppercase' : 'none',
+                      letterSpacing: isDateTime ? '0.02em' : 'normal'
+                    }}>{label}</p>
+                    <p style={{ 
+                      fontSize: isDateTime ? 15 : 14, 
+                      color: isDateTime ? '#92400E' : 'var(--color-text-primary)', 
+                      margin: 0, 
+                      fontWeight: isDateTime ? 700 : 600, 
+                      lineHeight: 1.4 
+                    }}>{value}</p>
+                  </div>
                 </div>
-                <div style={{ flex: 1 }}>
-                  <p style={{ fontSize: 11, color: 'var(--color-text-muted)', margin: '0 0 1px', fontWeight: 500 }}>{label}</p>
-                  <p style={{ fontSize: 14, color: 'var(--color-text-primary)', margin: 0, fontWeight: 600, lineHeight: 1.4 }}>{value}</p>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
