@@ -107,23 +107,29 @@ export default function MenuPage() {
 
   // Helper to render premium food category visual backdrops
   const renderItemMockup = (item: MenuItem) => {
-    let gradient = 'linear-gradient(135deg, oklch(0.85 0.12 75), oklch(0.7 0.15 75))'; // default amber
+    let bgColor = '#FEF3C7'; // default kopi panas
+    let iconColor = '#C2660A';
     let IconComponent = Coffee;
 
     if (item.kategori === 'kopi_panas') {
-      gradient = 'linear-gradient(135deg, oklch(0.8 0.14 75), oklch(0.55 0.15 65))';
+      bgColor = '#FEF3C7';
+      iconColor = '#C2660A';
       IconComponent = Coffee;
     } else if (item.kategori === 'kopi_dingin') {
-      gradient = 'linear-gradient(135deg, oklch(0.85 0.1 200), oklch(0.65 0.15 220))';
+      bgColor = '#DBEAFE';
+      iconColor = '#1D4ED8';
       IconComponent = Snowflake;
     } else if (item.kategori === 'non_kopi') {
-      gradient = 'linear-gradient(135deg, oklch(0.85 0.1 320), oklch(0.65 0.15 340))';
+      bgColor = '#DCFCE7';
+      iconColor = '#15803D';
       IconComponent = CupSoda;
     } else if (item.kategori === 'makanan_berat') {
-      gradient = 'linear-gradient(135deg, oklch(0.8 0.15 30), oklch(0.6 0.18 45))';
+      bgColor = '#FEE2E2';
+      iconColor = '#DC2626';
       IconComponent = Utensils;
     } else if (item.kategori === 'snack') {
-      gradient = 'linear-gradient(135deg, oklch(0.88 0.12 85), oklch(0.72 0.14 95))';
+      bgColor = '#F3E8FF';
+      iconColor = '#7C3AED';
       IconComponent = Cookie;
     }
 
@@ -132,24 +138,15 @@ export default function MenuPage() {
         width: 80,
         height: 80,
         borderRadius: 14,
-        background: gradient,
+        background: bgColor,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         flexShrink: 0,
-        boxShadow: 'inset 0 2px 4px oklch(1 0 0 / 0.15), 0 4px 12px oklch(0 0 0 / 0.06)',
         position: 'relative',
         overflow: 'hidden'
       }}>
-        {/* Subtle inner grid lines */}
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          opacity: 0.08,
-          backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
-          backgroundSize: '8px 8px'
-        }} />
-        <IconComponent size={34} color="white" strokeWidth={1.8} />
+        <IconComponent size={34} color={iconColor} strokeWidth={1.8} />
       </div>
     );
   };
@@ -166,188 +163,215 @@ export default function MenuPage() {
         position: 'sticky',
         top: 0,
         zIndex: 40,
-        background: 'oklch(0.975 0.005 75 / 0.92)',
-        backdropFilter: 'blur(8px)',
+        background: 'rgba(250, 250, 247, 0.92)',
+        backdropFilter: 'blur(12px)',
         borderBottom: '1px solid var(--color-border-light)',
-        padding: '16px 20px 12px',
+        padding: '16px 0 12px',
       }}>
-        
-        {/* Top title and back button */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-          <Link href="/" style={{
-            width: 36,
-            height: 36,
-            borderRadius: 10,
-            background: 'white',
-            border: '1px solid var(--color-border)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: 'var(--color-text)',
-            boxShadow: 'var(--shadow-card)',
-            textDecoration: 'none'
-          }}>
-            <ChevronLeft size={18} strokeWidth={2.5} />
-          </Link>
-          
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <img src="/smart-coffee.svg" alt="Logo" style={{ height: 28, width: 'auto' }} />
-            <h1 style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.02em', margin: 0 }}>
-              Smart QR Menu
-            </h1>
-          </div>
-
-          <div style={{ width: 36 }} /> {/* spacer */}
-        </div>
-
-        {/* Search & Sort & Filter Row */}
-        <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
-          <div style={{ position: 'relative', flex: 1 }}>
-            <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--color-placeholder)', display: 'flex' }}>
-              <Search size={16} />
-            </span>
-            <input 
-              type="text" 
-              placeholder="Cari kopi, makanan, rasa..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="input-field"
-              style={{
-                paddingLeft: 36,
-                paddingRight: searchQuery ? 32 : 12,
-                height: 42,
-              }}
-            />
-            {searchQuery && (
-              <button 
-                onClick={() => setSearchQuery('')}
-                style={{
-                  position: 'absolute',
-                  right: 10,
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  color: 'var(--color-muted)',
-                  cursor: 'pointer',
-                  display: 'flex',
-                  padding: 4
-                }}
-              >
-                <X size={14} strokeWidth={2.5} />
-              </button>
-            )}
-          </div>
-
-          {/* Filter options trigger */}
-          <button 
-            onClick={() => setIsFilterPanelOpen(!isFilterPanelOpen)}
-            style={{
-              width: 42,
-              height: 42,
-              borderRadius: 'var(--radius-input)',
-              border: `1.5px solid ${isFilterPanelOpen || onlyFavorites || onlyNew ? 'var(--color-primary)' : 'var(--color-border)'}`,
-              background: isFilterPanelOpen || onlyFavorites || onlyNew ? 'var(--color-primary-light)' : 'white',
-              color: isFilterPanelOpen || onlyFavorites || onlyNew ? 'var(--color-primary-dark)' : 'var(--color-text-secondary)',
+        <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
+          {/* Top title and back button */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, padding: '0 16px' }}>
+            <Link href="/" style={{
+              width: 44,
+              height: 44,
+              borderRadius: '50%',
+              background: 'white',
+              border: '1px solid #E7E5E4',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              cursor: 'pointer',
-              boxShadow: 'var(--shadow-card)',
-              transition: 'all 0.15s ease',
-            }}
-          >
-            <SlidersHorizontal size={18} strokeWidth={2} />
-          </button>
-        </div>
+              color: '#57534E',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+              textDecoration: 'none',
+              transition: 'all 0.15s ease'
+            }}>
+              <ChevronLeft size={20} strokeWidth={2.5} color="#57534E" />
+            </Link>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <img src="/smart-coffee.svg" alt="Logo" style={{ height: 28, width: 'auto' }} />
+              <h1 style={{ fontSize: 18, fontWeight: 800, letterSpacing: '-0.02em', margin: 0 }}>
+                Smart QR Menu
+              </h1>
+            </div>
 
-        {/* Category Pills (Horizontal Scroll) */}
-        <div style={{
-          display: 'flex',
-          gap: 6,
-          overflowX: 'auto',
-          paddingBottom: 4,
-          margin: '0 -20px -4px',
-          paddingLeft: 20,
-          paddingRight: 20,
-          scrollbarWidth: 'none',
-        }} className="no-scrollbar">
-          {categoryTabs.map((tab) => {
-            const TabIcon = tab.icon;
-            const isSelected = selectedCategory === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => setSelectedCategory(tab.id)}
+            <div style={{ width: 44 }} /> {/* spacer */}
+          </div>
+
+          {/* Search & Sort & Filter Row */}
+          <div style={{ display: 'flex', gap: 8, marginBottom: 12, padding: '0 16px' }}>
+            <div style={{ position: 'relative', flex: 1 }}>
+              <span style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: '#A8A29E', display: 'flex', zIndex: 10 }}>
+                <Search size={16} color="#A8A29E" />
+              </span>
+              <input 
+                type="text" 
+                placeholder="Cari kopi, makanan, rasa..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: 6,
-                  background: isSelected ? 'var(--color-primary)' : 'white',
-                  color: isSelected ? 'white' : 'var(--color-text-secondary)',
-                  border: isSelected ? '1px solid var(--color-primary)' : '1px solid var(--color-border)',
-                  borderRadius: 10,
-                  padding: '7px 13px',
-                  fontSize: 12,
-                  fontWeight: 600,
-                  whiteSpace: 'nowrap',
-                  cursor: 'pointer',
-                  boxShadow: isSelected ? 'var(--shadow-hero)' : 'var(--shadow-card)',
-                  transition: 'all 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
+                  width: '100%',
+                  paddingLeft: 36,
+                  paddingRight: searchQuery ? 32 : 12,
+                  height: 48,
+                  border: '1px solid #E7E5E4',
+                  background: '#F5F5F0',
+                  borderRadius: '12px',
+                  fontSize: '14px',
+                  color: 'var(--color-text-primary)',
+                  outline: 'none',
+                  boxShadow: 'none',
                 }}
-              >
-                <TabIcon size={13} strokeWidth={isSelected ? 2.5 : 2} />
-                {tab.label}
-              </button>
-            );
-          })}
+              />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery('')}
+                  style={{
+                    position: 'absolute',
+                    right: 10,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--color-muted)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    padding: 4,
+                    zIndex: 10
+                  }}
+                >
+                  <X size={14} strokeWidth={2.5} />
+                </button>
+              )}
+            </div>
+
+            {/* Filter options trigger */}
+            <button 
+              onClick={() => setIsFilterPanelOpen(!isFilterPanelOpen)}
+              style={{
+                width: 48,
+                height: 48,
+                borderRadius: 10,
+                border: '1px solid #E7E5E4',
+                background: '#F5F5F0',
+                color: '#57534E',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <SlidersHorizontal size={18} strokeWidth={2} color="#57534E" />
+            </button>
+          </div>
+
+          {/* Category Pills (Horizontal Scroll) Wrapper */}
+          <div style={{ width: '100%', overflow: 'hidden', minWidth: 0 }}>
+            <div className="filter-scroll" style={{
+              display: 'flex',
+              overflowX: 'auto',
+              width: '100%',
+              maxWidth: '100%',
+              gap: '8px',
+              padding: '0 16px',
+              scrollbarWidth: 'none',
+              msOverflowStyle: 'none',
+              WebkitOverflowScrolling: 'touch',
+            }}>
+              {categoryTabs.map((tab) => {
+                const TabIcon = tab.icon;
+                const isSelected = selectedCategory === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setSelectedCategory(tab.id)}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: 6,
+                      background: isSelected ? '#C2660A' : 'white',
+                      color: isSelected ? 'white' : '#57534E',
+                      border: isSelected ? '1px solid #C2660A' : '1px solid #E7E5E4',
+                      borderRadius: 10,
+                      padding: '7px 13px',
+                      fontSize: 12,
+                      fontWeight: 600,
+                      whiteSpace: 'nowrap',
+                      cursor: 'pointer',
+                      flexShrink: 0,
+                      transition: 'all 0.15s cubic-bezier(0.16, 1, 0.3, 1)',
+                    }}
+                  >
+                    <TabIcon size={13} strokeWidth={isSelected ? 2.5 : 2} />
+                    {tab.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
 
       {/* ── Advanced Filter & Sort Tray ── */}
-      {isFilterPanelOpen && (
-        <div 
-          className="animate-fade-in"
-          style={{
-            background: 'white',
-            borderBottom: '1px solid var(--color-border)',
-            padding: '16px 20px',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 14,
-            boxShadow: '0 8px 24px oklch(0 0 0 / 0.05)',
-          }}
-        >
+      <div 
+        style={{
+          background: 'var(--color-bg)',
+          borderBottom: isFilterPanelOpen ? '1px solid var(--color-border)' : '0px solid transparent',
+          boxShadow: isFilterPanelOpen ? '0 8px 24px rgba(0, 0, 0, 0.04)' : 'none',
+          overflow: 'hidden',
+          transition: 'all 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
+          maxHeight: isFilterPanelOpen ? 250 : 0,
+          opacity: isFilterPanelOpen ? 1 : 0,
+          transform: isFilterPanelOpen ? 'translateY(0)' : 'translateY(-10px)',
+          pointerEvents: isFilterPanelOpen ? 'auto' : 'none',
+        }}
+      >
+        <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', padding: '16px 0', display: 'flex', flexDirection: 'column', gap: 14 }}>
           {/* Sort row */}
           <div>
-            <div style={{ fontSize: 12, fontWeight: 700, color: 'var(--color-text)', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 4 }}>
-              <ArrowUpDown size={12} /> Urutkan Berdasarkan
+            <div style={{ fontSize: 13, fontWeight: 700, color: 'var(--color-text-primary)', marginBottom: 8, display: 'flex', alignItems: 'center', gap: 6, padding: '0 16px' }}>
+              <ArrowUpDown size={14} color="#C2660A" /> Urutkan Berdasarkan
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              {sortOptions.map((opt) => (
-                <button
-                  key={opt.id}
-                  onClick={() => setSortBy(opt.id)}
-                  style={{
-                    background: sortBy === opt.id ? 'var(--color-primary-light)' : 'white',
-                    color: sortBy === opt.id ? 'var(--color-primary-dark)' : 'var(--color-text-secondary)',
-                    border: sortBy === opt.id ? '1px solid oklch(0.85 0.1 80)' : '1px solid var(--color-border)',
-                    borderRadius: 8,
-                    padding: '5px 10px',
-                    fontSize: 11,
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    transition: 'all 0.15s ease'
-                  }}
-                >
-                  {opt.label}
-                </button>
-              ))}
+            <div style={{ width: '100%', overflow: 'hidden', minWidth: 0 }}>
+              <div className="filter-scroll" style={{
+                display: 'flex',
+                overflowX: 'auto',
+                width: '100%',
+                maxWidth: '100%',
+                gap: '8px',
+                padding: '0 16px 4px',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+                WebkitOverflowScrolling: 'touch',
+              }}>
+                {sortOptions.map((opt) => (
+                  <button
+                    key={opt.id}
+                    onClick={() => setSortBy(opt.id)}
+                    style={{
+                      background: sortBy === opt.id ? '#C2660A' : 'white',
+                      color: sortBy === opt.id ? 'white' : '#57534E',
+                      border: sortBy === opt.id ? '1px solid #C2660A' : '1px solid #E7E5E4',
+                      borderRadius: 10,
+                      padding: '6px 12px',
+                      fontSize: 12,
+                      fontWeight: 600,
+                      whiteSpace: 'nowrap',
+                      cursor: 'pointer',
+                      flexShrink: 0,
+                      transition: 'all 0.15s ease'
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
           {/* Quick toggle options */}
-          <div style={{ display: 'flex', gap: 10, borderTop: '1px solid var(--color-border-light)', paddingTop: 12 }}>
+          <div style={{ display: 'flex', gap: 10, borderTop: '1px solid var(--color-border-light)', paddingTop: 12, paddingLeft: 16, paddingRight: 16 }}>
             <button
               onClick={() => setOnlyFavorites(!onlyFavorites)}
               style={{
@@ -356,18 +380,18 @@ export default function MenuPage() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 6,
-                background: onlyFavorites ? 'oklch(0.96 0.04 25)' : 'white',
-                color: onlyFavorites ? 'var(--color-error)' : 'var(--color-text-secondary)',
-                border: onlyFavorites ? '1px solid oklch(0.85 0.1 25)' : '1px solid var(--color-border)',
-                borderRadius: 8,
-                padding: '8px 12px',
-                fontSize: 12,
+                background: onlyFavorites ? '#FEE2E2' : '#F5F5F0',
+                color: onlyFavorites ? '#DC2626' : '#57534E',
+                border: onlyFavorites ? '1px solid #DC2626' : '1px solid #E7E5E4',
+                borderRadius: 10,
+                padding: '10px 14px',
+                fontSize: 12.5,
                 fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.15s ease'
               }}
             >
-              <Heart size={13} fill={onlyFavorites ? 'var(--color-error)' : 'none'} />
+              <Heart size={14} fill={onlyFavorites ? '#DC2626' : 'none'} />
               Menu Terpopuler
             </button>
 
@@ -379,26 +403,26 @@ export default function MenuPage() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: 6,
-                background: onlyNew ? 'var(--color-success-light)' : 'white',
-                color: onlyNew ? 'var(--color-success)' : 'var(--color-text-secondary)',
-                border: onlyNew ? '1px solid oklch(0.85 0.1 145)' : '1px solid var(--color-border)',
-                borderRadius: 8,
-                padding: '8px 12px',
-                fontSize: 12,
+                background: onlyNew ? '#DCFCE7' : '#F5F5F0',
+                color: onlyNew ? '#15803D' : '#57534E',
+                border: onlyNew ? '1px solid #15803D' : '1px solid #E7E5E4',
+                borderRadius: 10,
+                padding: '10px 14px',
+                fontSize: 12.5,
                 fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.15s ease'
               }}
             >
-              <Sparkles size={13} />
+              <Sparkles size={14} />
               Menu Baru
             </button>
           </div>
         </div>
-      )}
+      </div>
 
       {/* ── Main Menu List ── */}
-      <main style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+      <main className="menu-items-grid">
         {filteredAndSortedMenu.length > 0 ? (
           filteredAndSortedMenu.map((item, index) => {
             // Apply delay up to 5 items to keep staggering fast and snappy
@@ -411,13 +435,18 @@ export default function MenuPage() {
             return (
               <div 
                 key={item.id}
-                className={`card animate-fade-in-up ${staggerDelayClass}`}
+                className={`animate-fade-in-up ${staggerDelayClass}`}
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 12,
                   position: 'relative',
                   opacity: item.tersedia ? 1 : 0.6,
+                  background: 'white',
+                  border: '0.5px solid #E7E5E4',
+                  borderRadius: '16px',
+                  padding: '16px',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
                 }}
               >
                 
@@ -527,10 +556,22 @@ export default function MenuPage() {
                 </div>
 
                 {/* 3. Tag Chips */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
                   {item.tags.map((tag) => (
-                    <span key={tag} className="tag-chip">
-                      #{tag}
+                    <span 
+                      key={tag} 
+                      style={{
+                        background: '#F5F5F0',
+                        borderRadius: '999px',
+                        padding: '4px 10px',
+                        fontSize: '11px',
+                        color: '#78716C',
+                        fontWeight: 500,
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      {tag}
                     </span>
                   ))}
                 </div>

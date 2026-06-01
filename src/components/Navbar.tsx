@@ -13,94 +13,77 @@ const navItems = [
   {
     href: '/ai-assistant',
     icon: Bot,
-    label: 'AI',
+    label: 'Tanya AI',
   },
   {
     href: '/reservasi',
     icon: CalendarDays,
-    label: 'Booking',
+    label: 'Booking Meja',
   },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
 
+  // Hide bottom and top navbars on the landing page
+  if (pathname === '/') return null;
+
   return (
-    <nav
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        left: '50%',
-        transform: 'translateX(-50%)',
-        width: '100%',
-        maxWidth: 480,
-        background: 'white',
-        borderTop: '1px solid var(--color-border)',
-        boxShadow: 'var(--shadow-navbar)',
-        paddingBottom: 'env(safe-area-inset-bottom)',
-        zIndex: 50,
-      }}
-    >
-      <div
-        style={{
-          display: 'flex',
-          height: 64,
-          alignItems: 'stretch',
-        }}
-      >
+    <>
+      {/* ── TOP NAV BAR (Desktop only, >= 768px) ── */}
+      <nav className="desktop-top-nav">
+        <div className="desktop-nav-container">
+          <Link href="/" className="desktop-nav-logo">
+            <img src="/smart-coffee.svg" alt="KUPITA Logo" />
+            <span>KUPITA</span>
+          </Link>
+          <div className="desktop-nav-links">
+            {navItems.map(({ href, label }) => {
+              const isActive = pathname === href || pathname.startsWith(href + '/');
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`desktop-nav-link ${isActive ? 'active' : ''}`}
+                >
+                  {label}
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </nav>
+
+      {/* ── BOTTOM NAV BAR (Mobile only, < 768px) ── */}
+      <nav className="mobile-bottom-nav">
         {navItems.map(({ href, icon: Icon, label }) => {
           const isActive = pathname === href || pathname.startsWith(href + '/');
+          const mobileLabel = label === 'Booking Meja' ? 'Booking' : label === 'Tanya AI' ? 'AI' : label;
 
           return (
             <Link
               key={href}
               href={href}
-              style={{
-                flex: 1,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: 4,
-                textDecoration: 'none',
-                color: isActive ? 'var(--color-primary)' : 'var(--color-muted)',
-                transition: 'color 0.15s ease',
-                position: 'relative',
-              }}
+              className={`nav-item ${isActive ? 'active' : ''}`}
             >
-              {/* Active indicator top bar */}
-              {isActive && (
-                <span
-                  style={{
-                    position: 'absolute',
-                    top: 0,
-                    left: '25%',
-                    right: '25%',
-                    height: 2,
-                    background: 'var(--color-primary)',
-                    borderRadius: '0 0 4px 4px',
-                  }}
-                />
-              )}
-
               <Icon
-                size={22}
+                size={20}
                 strokeWidth={isActive ? 2.5 : 1.8}
-                style={{ transition: 'all 0.15s ease' }}
+                style={{ transition: 'all var(--transition-fast)' }}
               />
               <span
                 style={{
-                  fontSize: 11,
-                  fontWeight: isActive ? 600 : 400,
+                  fontSize: 10,
+                  fontWeight: isActive ? 600 : 500,
                   lineHeight: 1,
                 }}
               >
-                {label}
+                {mobileLabel}
               </span>
             </Link>
           );
         })}
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 }

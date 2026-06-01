@@ -41,6 +41,15 @@ untuk cafe & warkop modern di Aceh
 | 📅 **Reservasi Meja** | Booking meja dengan denah visual interaktif, cek ketersediaan real-time dari Supabase |
 | ✅ **Konfirmasi Booking** | Halaman sukses dengan kode booking unik (WK-XXXX) |
 | 📱 **Mobile-First** | Dioptimalkan untuk smartphone — perfect setelah scan QR |
+---
+
+## ✨ Pembaruan Terkini
+
+Berikut adalah beberapa peningkatan terbaru yang telah diimplementasikan:
+1. **Redesain AI Assistant (Desktop)**: Tampilan chat AI kini memiliki layout 2-kolom pada layar desktop. Sidebar kiri memuat daftar pilihan Mood, Quick Chips, dan link navigasi, sedangkan panel chat utama berada di sebelah kanan. Layout mobile tetap compact dan ramah sentuhan.
+2. **Optimasi Grid Reservasi (Mobile)**: Ukuran meja dan gap disesuaikan agar pas dalam layout mobile 390px (iPhone) tanpa terpotong atau keluar margin. Label denah dibersihkan dari emoji agar terlihat profesional.
+3. **Pembersihan Emoji Sukses Booking**: Halaman sukses reservasi disederhanakan dengan ikon modern dan tanpa emoji dekoratif yang berlebihan.
+4. **Perbaikan Duplikasi Key**: Menyelesaikan issue duplikasi React key pada render baris meja di halaman reservasi.
 
 ---
 

@@ -56,6 +56,7 @@ agents/
 
 # PRD & planning docs (internal only)
 prdKOPI.md
+kupitaDesignSystem.md
 implementation_plan.md
 walkthrough.md
 task.md

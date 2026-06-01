@@ -15,65 +15,67 @@ const infoChips = [
 
 export default function LandingPage() {
   return (
-    <div style={{
+    <div className="landing-page-root" style={{
       minHeight: '100dvh',
       background: 'var(--color-bg)',
       display: 'flex',
       flexDirection: 'column',
     }}>
 
-      {/* ── Header ── */}
-      <header className="animate-fade-in-up" style={{ padding: '52px 20px 28px', textAlign: 'center' }}>
+      {/* Split wrapper that turns into a two-column grid on desktop */}
+      <div className="landing-split-wrapper" style={{ width: '100%' }}>
+        {/* ── Header ── */}
+        <header className="landing-header animate-fade-in-up" style={{ padding: '52px 20px 28px', textAlign: 'center' }}>
 
-        {/* Cafe identity */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
-          <img 
-            src="/smart-coffee.svg" 
-            alt="KUPITA Logo" 
-            style={{ 
-              height: 84, 
-              width: 'auto',
-              filter: 'drop-shadow(0 6px 16px oklch(0.66 0.155 75 / 0.15))'
-            }} 
-          />
-        </div>
-        <h1 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 6 }}>
-          KUPITA
-        </h1>
-        <p style={{
-          fontSize: 15,
-          color: 'var(--color-muted)',
-          margin: '0 auto 24px',
-          maxWidth: '36ch',
-        }}>
-          Platform Smart QR Menu, AI Assistant & Reservasi Meja untuk Warkop Modern
-        </p>
+          {/* Cafe identity */}
+          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+            <img 
+              src="/smart-coffee.svg" 
+              alt="KUPITA Logo" 
+              style={{ 
+                height: 84, 
+                width: 'auto',
+                filter: 'drop-shadow(0 6px 16px oklch(0.66 0.155 75 / 0.15))'
+              }} 
+            />
+          </div>
+          <h1 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 6 }}>
+            KUPITA
+          </h1>
+          <p style={{
+            fontSize: 15,
+            color: 'var(--color-muted)',
+            margin: '0 auto 24px',
+            maxWidth: '36ch',
+          }}>
+            Platform Smart QR Menu, AI Assistant & Reservasi Meja untuk Warkop Modern
+          </p>
 
-        {/* Info chips */}
-        <div className="animate-fade-in-up delay-75" style={{ display: 'flex', justifyContent: 'center', gap: 8, flexWrap: 'wrap' }}>
-          {infoChips.map(({ icon: Icon, label }) => (
-            <span key={label} style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: 5,
-              background: 'white',
-              border: '1px solid var(--color-border)',
-              borderRadius: 8,
-              padding: '5px 11px',
-              fontSize: 12,
-              color: 'var(--color-text-secondary)',
-              fontWeight: 500,
-              boxShadow: 'var(--shadow-card)',
-            }}>
-              <Icon size={12} strokeWidth={2} color="var(--color-muted)" />
-              {label}
-            </span>
-          ))}
-        </div>
-      </header>
+          {/* Info chips */}
+          <div className="animate-fade-in-up delay-75" style={{ display: 'flex', justifyContent: 'center', gap: 8, flexWrap: 'wrap' }}>
+            {infoChips.map(({ icon: Icon, label }) => (
+              <span key={label} style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 5,
+                background: 'white',
+                border: '1px solid var(--color-border)',
+                borderRadius: 8,
+                padding: '5px 11px',
+                fontSize: 12,
+                color: 'var(--color-text-secondary)',
+                fontWeight: 500,
+                boxShadow: 'var(--shadow-card)',
+              }}>
+                <Icon size={12} strokeWidth={2} color="var(--color-muted)" />
+                {label}
+              </span>
+            ))}
+          </div>
+        </header>
 
-      {/* ── Navigation Cards ── */}
-      <main style={{ padding: '0 20px 16px', flex: 1, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        {/* ── Navigation Cards ── */}
+        <main className="landing-main" style={{ padding: '0 20px 16px', flex: 1, display: 'flex', flexDirection: 'column', gap: 12 }}>
 
         {/* Hero card — Menu (primary action) */}
         <Link href="/menu" className="nav-card-hero animate-fade-in-up delay-150" style={{
@@ -209,6 +211,7 @@ export default function LandingPage() {
           </Link>
         </div>
       </main>
+      </div>
 
       {/* ── Footer ── */}
       <footer className="animate-fade-in-up delay-300" style={{ padding: '12px 20px 32px', textAlign: 'center' }}>
