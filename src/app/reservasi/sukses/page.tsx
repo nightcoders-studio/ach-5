@@ -3,7 +3,7 @@
 import { useSearchParams } from 'next/navigation';
 import { Suspense, useState, useEffect } from 'react';
 import Link from 'next/link';
-import { CheckCircle2, User, Calendar, TableProperties, Users, MessageSquare, Copy, Home, UtensilsCrossed } from 'lucide-react';
+import { CheckCircle2, User, Calendar, TableProperties, Users, MessageSquare, Copy, Home, UtensilsCrossed, Info, Download } from 'lucide-react';
 
 function formatTanggal(dateStr: string): string {
   if (!dateStr) return '-';
@@ -38,6 +38,26 @@ function SuksesContent() {
       setTimeout(() => setCopied(false), 2000);
     } catch {
       // silently fail
+    }
+  };
+
+  const handleDownloadQR = async () => {
+    try {
+      const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&color=c2660a&data=${encodeURIComponent(qrUrl || kode)}`;
+      const response = await fetch(qrCodeUrl);
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+      
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = `QR_Booking_${kode}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(blobUrl);
+    } catch {
+      // fallback to open in new tab
+      window.open(`https://api.qrserver.com/v1/create-qr-code/?size=300x300&color=c2660a&data=${encodeURIComponent(qrUrl || kode)}`, '_blank');
     }
   };
 
@@ -79,7 +99,7 @@ function SuksesContent() {
         {/* ── Judul ── */}
         <div style={{ textAlign: 'center', marginBottom: 24 }}>
           <h1 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 4 }}>
-            Reservasi Berhasil! 🎉
+            Reservasi Berhasil!
           </h1>
           <p style={{ fontSize: 14, color: 'var(--color-text-muted)', margin: 0 }}>
             Datang tepat waktu ya! Tim kami sudah siapkan mejamu.
@@ -155,7 +175,7 @@ function SuksesContent() {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: 10,
+          gap: 12,
         }}>
           <div style={{
             background: '#F5F5F0',
@@ -172,8 +192,32 @@ function SuksesContent() {
               style={{ display: 'block', borderRadius: 6 }}
             />
           </div>
-          <p style={{ fontSize: 12, color: 'var(--color-text-secondary)', margin: 0, fontWeight: 600 }}>
-            Scan di Kasir untuk Check-In
+
+          <button
+            onClick={handleDownloadQR}
+            style={{
+              background: 'none',
+              border: 'none',
+              color: 'var(--color-primary)',
+              fontSize: 12,
+              fontWeight: 700,
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 6,
+              padding: '6px 12px',
+              borderRadius: 8,
+              transition: 'background 0.2s ease',
+            }}
+            onMouseOver={e => e.currentTarget.style.background = 'var(--color-primary-light)'}
+            onMouseOut={e => e.currentTarget.style.background = 'none'}
+          >
+            <Download size={14} />
+            Unduh QR Code
+          </button>
+
+          <p style={{ fontSize: 11, color: 'var(--color-text-muted)', margin: 0 }}>
+            Tunjukkan QR ini ke kasir saat check-in
           </p>
         </div>
 
@@ -245,7 +289,7 @@ function SuksesContent() {
           gap: 8,
           alignItems: 'flex-start',
         }}>
-          <span style={{ fontSize: 16 }}>💡</span>
+          <Info size={16} color="#92400E" style={{ flexShrink: 0, marginTop: 2 }} />
           <p style={{ fontSize: 12, color: '#92400E', margin: 0, lineHeight: 1.5 }}>
             <strong>Simpan kode booking kamu!</strong> Tunjukkan ke kasir saat tiba untuk konfirmasi meja.
           </p>
