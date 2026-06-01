@@ -168,7 +168,7 @@ export default function MenuPage() {
         borderBottom: '1px solid var(--color-border-light)',
         padding: '16px 0 12px',
       }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
+        <div style={{ margin: '0 auto', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
           {/* Top title and back button */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, padding: '0 16px' }}>
             <Link href="/" style={{
