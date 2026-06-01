@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   description:
     'Platform QR menu digital dengan AI assistant untuk membantu kamu memilih menu sesuai mood. Reservasi meja juga bisa langsung dari sini!',
   keywords: ['kopi', 'cafe', 'menu digital', 'reservasi', 'AI assistant', 'Banda Aceh'],
-  authors: [{ name: 'Night Coders Studio' }],
+  authors: [{ name: 'Tim KUPITA (Hafid Zayyan Ali, Era Syafina, Habbilmusa)' }],
   openGraph: {
     title: 'KUPITA — Kopi Untuk Pikiran Terindah Anda',
     description: 'Scan QR → Pilih Menu → Pesan. Sesederhana itu.',

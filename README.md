@@ -27,7 +27,7 @@ untuk cafe & warkop modern di Aceh
 
 **KUPITA** (Kopi Untuk Pikiran Terindah Anda) adalah platform pemesanan digital cerdas yang dirancang khusus untuk cafe dan warkop modern di Aceh. Pelanggan cukup **scan QR code** di meja, langsung bisa melihat menu lengkap, berkonsultasi dengan **AI Assistant berbasis Gemini**, hingga melakukan **reservasi meja** — semua dari satu platform yang responsif dan mudah digunakan.
 
-> Dibangun dalam 12 jam untuk **Aceh Hackathon 2026** oleh tim Night Coders Studio.
+> Dibangun dalam 12 jam untuk **Aceh Hackathon 2026** oleh **Tim KUPITA**.
 
 ---
 
@@ -214,9 +214,12 @@ npm install @google/generative-ai @supabase/supabase-js lucide-react
 
 ---
 
-## 👥 Tim
+## 👥 Tim KUPITA
 
-Dibuat dengan ☕ oleh **Night Coders Studio** untuk **Aceh Hackathon 2026**.
+Dibuat dengan ☕ untuk **Aceh Hackathon 2026** oleh:
+- **Hafid Zayyan Ali** (Hacker)
+- **Era Syafina** (Hacker)
+- **Habbilmusa** (Hustler)
 
 ---
 
