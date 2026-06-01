@@ -31,4 +31,5 @@ export interface MenuItem {
   tersedia: boolean;
   is_favorit: boolean;
   is_baru: boolean;
+  detail_ai?: string;
 }

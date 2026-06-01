@@ -11,7 +11,8 @@
     "mood_cocok": ["ngantuk", "kerja"],
     "tersedia": true,
     "is_favorit": false,
-    "is_baru": false
+    "is_baru": false,
+    "detail_ai": "Kalori: ~5 kcal. Bahan: Biji kopi Arabika Gayo premium (medium-dark roast), air panas. Alergen: Bebas alergen. Kafein: Sangat tinggi (~60-80mg)."
   },
   {
     "id": "americano-01",
@@ -25,7 +26,8 @@
     "mood_cocok": ["belajar", "kerja", "ngantuk"],
     "tersedia": true,
     "is_favorit": false,
-    "is_baru": false
+    "is_baru": false,
+    "detail_ai": "Kalori: ~10 kcal. Bahan: Single/Double shot espresso, air panas tambahan. Alergen: Bebas alergen. Kafein: Tinggi (~80-120mg)."
   },
   {
     "id": "cappuccino-01",
@@ -39,7 +41,8 @@
     "mood_cocok": ["belajar", "kerja", "nongkrong"],
     "tersedia": true,
     "is_favorit": true,
-    "is_baru": false
+    "is_baru": false,
+    "detail_ai": "Kalori: ~120 kcal. Bahan: Espresso shot, susu sapi segar (steam milk), foam susu tebal. Alergen: Susu sapi (Laktosa). Kafein: Sedang (~60-80mg)."
   },
   {
     "id": "latte-01",
@@ -53,7 +56,8 @@
     "mood_cocok": ["belajar", "nongkrong", "happy"],
     "tersedia": true,
     "is_favorit": false,
-    "is_baru": false
+    "is_baru": false,
+    "detail_ai": "Kalori: ~150 kcal. Bahan: Espresso shot, susu sapi segar (steam milk lebih banyak), foam tipis. Alergen: Susu sapi (Laktosa). Kafein: Sedang (~60-80mg)."
   },
   {
     "id": "kopi-aren-01",
@@ -67,7 +71,8 @@
     "mood_cocok": ["happy", "nongkrong", "belajar"],
     "tersedia": true,
     "is_favorit": true,
-    "is_baru": false
+    "is_baru": false,
+    "detail_ai": "Kalori: ~190 kcal. Bahan: Espresso shot, gula aren murni khas Aceh, susu sapi segar, es batu. Alergen: Susu sapi (Laktosa). Kafein: Sedang (~60-80mg)."
   },
   {
     "id": "es-americano-01",
@@ -81,7 +86,8 @@
     "mood_cocok": ["ngantuk", "kerja", "belajar"],
     "tersedia": true,
     "is_favorit": false,
-    "is_baru": false
+    "is_baru": false,
+    "detail_ai": "Kalori: ~10 kcal. Bahan: Espresso shot, air dingin, es batu. Alergen: Bebas alergen. Kafein: Tinggi (~80-120mg)."
   },
   {
     "id": "matcha-latte-01",
@@ -95,7 +101,8 @@
     "mood_cocok": ["happy", "belajar", "nongkrong"],
     "tersedia": true,
     "is_favorit": false,
-    "is_baru": true
+    "is_baru": true,
+    "detail_ai": "Kalori: ~160 kcal. Bahan: Bubuk green tea matcha premium impor Jepang, susu sapi segar, gula cair, es batu. Alergen: Susu sapi (Laktosa). Kafein: Sangat rendah (~15-20mg dari matcha alami)."
   },
   {
     "id": "coklat-dingin-01",
@@ -109,7 +116,8 @@
     "mood_cocok": ["happy", "nongkrong"],
     "tersedia": true,
     "is_favorit": false,
-    "is_baru": false
+    "is_baru": false,
+    "detail_ai": "Kalori: ~210 kcal. Bahan: Bubuk kakao hitam manis premium, susu sapi cair (whole milk), sirup coklat, es batu. Alergen: Susu sapi (Laktosa). Kafein: Bebas kafein."
   },
   {
     "id": "teh-tarik-01",
@@ -123,7 +131,8 @@
     "mood_cocok": ["nongkrong", "happy", "belajar"],
     "tersedia": true,
     "is_favorit": false,
-    "is_baru": false
+    "is_baru": false,
+    "detail_ai": "Kalori: ~140 kcal. Bahan: Seduhan teh hitam pekat (black tea), susu kental manis, air panas. Alergen: Susu sapi / Produk olahan susu. Kafein: Rendah (~20-30mg dari teh hitam)."
   },
   {
     "id": "es-teh-tarik-01",
@@ -137,7 +146,8 @@
     "mood_cocok": ["nongkrong", "happy"],
     "tersedia": true,
     "is_favorit": false,
-    "is_baru": false
+    "is_baru": false,
+    "detail_ai": "Kalori: ~150 kcal. Bahan: Seduhan teh hitam pekat, susu kental manis, es batu. Alergen: Susu sapi / Produk olahan susu. Kafein: Rendah (~20-30mg)."
   },
   {
     "id": "nasi-goreng-01",
@@ -151,7 +161,8 @@
     "mood_cocok": ["ngantuk", "kerja", "belajar", "nongkrong"],
     "tersedia": true,
     "is_favorit": true,
-    "is_baru": false
+    "is_baru": false,
+    "detail_ai": "Kalori: ~550 kcal. Bahan: Nasi putih, telur ayam kocok, suwiran dada ayam, minyak kelapa, kecap manis kedelai, bawang merah, bawang putih, cabai merah, rempah khas Aceh. Alergen: Telur, Kedelai/Gluten (dari kecap). Kafein: Bebas kafein."
   },
   {
     "id": "mie-goreng-01",
@@ -165,7 +176,8 @@
     "mood_cocok": ["ngantuk", "kerja", "belajar"],
     "tersedia": true,
     "is_favorit": false,
-    "is_baru": false
+    "is_baru": false,
+    "detail_ai": "Kalori: ~480 kcal. Bahan: Mie kuning terigu, telur, kubis (kol), sawi hijau, kecap manis, kaldu jamur, bawang, cabai, bumbu gurih. Alergen: Gluten (terigu), Telur, Kedelai. Kafein: Bebas kafein."
   },
   {
     "id": "kentang-goreng-01",
@@ -179,7 +191,8 @@
     "mood_cocok": ["nongkrong", "happy", "belajar"],
     "tersedia": true,
     "is_favorit": false,
-    "is_baru": false
+    "is_baru": false,
+    "detail_ai": "Kalori: ~250 kcal. Bahan: Kentang potong (french fries), garam, minyak kelapa sawit untuk menggoreng. Disajikan dengan saus sambal pedas & mayones botol. Alergen: Telur/Kedelai (terdapat pada emulsi mayones). Kafein: Bebas kafein."
   },
   {
     "id": "banana-cake-01",
@@ -193,7 +206,8 @@
     "mood_cocok": ["happy", "belajar", "nongkrong"],
     "tersedia": true,
     "is_favorit": false,
-    "is_baru": false
+    "is_baru": false,
+    "detail_ai": "Kalori: ~280 kcal. Bahan: Pisang raja/ambon matang dihaluskan, tepung terigu protein sedang, telur ayam segar, mentega susu (butter), gula pasir murni, baking powder. Alergen: Gluten (gandum), Telur, Mentega (Laktosa/Susu). Kafein: Bebas kafein."
   },
   {
     "id": "croissant-01",
@@ -207,6 +221,7 @@
     "mood_cocok": ["belajar", "kerja", "happy"],
     "tersedia": true,
     "is_favorit": false,
-    "is_baru": false
+    "is_baru": false,
+    "detail_ai": "Kalori: ~240 kcal. Bahan: Adonan pastry lipat (tepung terigu, ragi, air), mentega (butter premium), gula, telur kocok untuk olesan luar. Alergen: Gluten (gandum), Mentega (Laktosa/Susu), Telur (olesan). Kafein: Bebas kafein."
   }
 ]
