@@ -10,6 +10,18 @@ interface Message {
   text: string;
 }
 
+// Helper to render simple bold markdown (**text**) as bold JSX elements
+function parseMarkdownBold(text: string) {
+  if (!text) return '';
+  const parts = text.split(/\*\*([^*]+)\*\*/g);
+  return parts.map((part, i) => {
+    if (i % 2 === 1) {
+      return <strong key={i} style={{ fontWeight: 800 }}>{part}</strong>;
+    }
+    return part;
+  });
+}
+
 const moodItems = [
   { id: 'happy',     emoji: '😊', label: 'Happy',     query: 'Aku lagi bahagia sekali hari ini! Ada rekomendasi menu manis atau segar buat merayakan hari ini?' },
   { id: 'ngantuk',   emoji: '😴', label: 'Ngantuk',   query: 'Aku mengantuk sekali... Tolong pilihkan kopi paling kuat, pahit, dan bisa membuat melek instan!' },
@@ -154,7 +166,7 @@ export default function AIAssistantPage() {
                 boxShadow: 'var(--shadow-card)',
                 fontSize: 13, lineHeight: 1.5, whiteSpace: 'pre-wrap',
               }}>
-                {msg.text}
+                {parseMarkdownBold(msg.text)}
               </div>
             </div>
           </div>
@@ -260,7 +272,6 @@ export default function AIAssistantPage() {
                 Tanya KUPITA AI
                 <span style={{ width: 7, height: 7, borderRadius: '50%', background: 'var(--color-success)', boxShadow: '0 0 6px var(--color-success)', flexShrink: 0 }} />
               </div>
-              <div style={{ fontSize: 11, color: 'var(--color-text-muted)', marginTop: 1 }}>Powered by Gemini 2.5 Flash</div>
             </div>
           </div>
 
@@ -342,7 +353,6 @@ export default function AIAssistantPage() {
                 <h1 className="text-heading" style={{ fontSize: 15, fontWeight: 750, margin: 0 }}>Tanya KUPITA AI</h1>
                 <span style={{ width: 6, height: 6, borderRadius: '50%', background: 'var(--color-success)', display: 'inline-block', boxShadow: '0 0 6px var(--color-success)' }} />
               </div>
-              <p className="text-small" style={{ fontSize: 10, margin: 0, color: 'var(--color-text-muted)' }}>Powered by Gemini 2.5 Flash</p>
             </div>
             <img src="/smart-coffee.svg" alt="KUPITA Logo" style={{ height: 28, width: 'auto' }} />
           </header>
