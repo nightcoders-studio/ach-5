@@ -804,3 +804,86 @@ body {
   }
 }
 
+/* ── KUPITA Smart Menu Shopping Cart Styles ── */
+.floating-cart-bar {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 32px);
+  max-width: 358px;
+  background: var(--color-primary);
+  color: white;
+  border-radius: var(--radius-lg);
+  padding: 12px 16px;
+  box-shadow: var(--shadow-float);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 45;
+  bottom: calc(76px + env(safe-area-inset-bottom, 16px));
+  transition: all var(--transition-normal);
+  animation: cartFadeUp 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (min-width: 768px) {
+  .floating-cart-bar {
+    bottom: 24px;
+    max-width: 500px;
+    width: calc(100% - 48px);
+  }
+}
+
+.cart-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(28, 25, 23, 0.6);
+  backdrop-filter: blur(6px);
+  z-index: var(--z-modal);
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  animation: cartFadeIn 250ms ease-out forwards;
+}
+
+.cart-drawer {
+  background: var(--color-bg);
+  border-top-left-radius: var(--radius-xl);
+  border-top-right-radius: var(--radius-xl);
+  width: 100%;
+  max-width: 500px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+  animation: cartSlideUp 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@media (min-width: 768px) {
+  .cart-overlay {
+    align-items: center;
+    padding: 24px;
+  }
+  .cart-drawer {
+    border-radius: var(--radius-xl);
+    max-height: 90vh;
+    height: auto;
+  }
+}
+
+@keyframes cartFadeUp {
+  from { opacity: 0; transform: translate(-50%, 16px); }
+  to { opacity: 1; transform: translate(-50%, 0); }
+}
+
+@keyframes cartFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cartSlideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}

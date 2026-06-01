@@ -15,7 +15,12 @@ import {
   Sparkles, 
   ArrowUpDown, 
   X,
-  Heart
+  Heart,
+  Plus,
+  Minus,
+  ShoppingCart,
+  Trash2,
+  ClipboardList
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import menuData from '@/data/menu.json';
@@ -48,6 +53,96 @@ export default function MenuPage() {
   // Advanced Filters
   const [onlyFavorites, setOnlyFavorites] = useState(false);
   const [onlyNew, setOnlyNew] = useState(false);
+
+  // Shopping Cart & Checkout State
+  const [cart, setCart] = useState<Record<string, number>>({});
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [customerName, setCustomerName] = useState('');
+  const [tableNumber, setTableNumber] = useState('');
+  const [orderNotes, setOrderNotes] = useState('');
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [orderSuccessDetails, setOrderSuccessDetails] = useState<{
+    name: string;
+    table: string;
+    items: Array<{ nama: string; qty: number; harga: number }>;
+    total: number;
+  } | null>(null);
+
+  // Cart operations
+  const addToCart = (itemId: string) => {
+    setCart(prev => ({
+      ...prev,
+      [itemId]: (prev[itemId] || 0) + 1
+    }));
+  };
+
+  const removeFromCart = (itemId: string) => {
+    setCart(prev => {
+      const next = { ...prev };
+      if (!next[itemId]) return prev;
+      if (next[itemId] <= 1) {
+        delete next[itemId];
+      } else {
+        next[itemId]--;
+      }
+      return next;
+    });
+  };
+
+  const clearCart = () => {
+    setCart({});
+  };
+
+  const cartTotalItems = useMemo(() => {
+    return Object.values(cart).reduce((sum, qty) => sum + qty, 0);
+  }, [cart]);
+
+  const cartTotalPrice = useMemo(() => {
+    return Object.entries(cart).reduce((sum, [itemId, qty]) => {
+      const item = menuData.find(m => m.id === itemId);
+      return sum + (item ? item.harga * qty : 0);
+    }, 0);
+  }, [cart]);
+
+  const handleCheckout = () => {
+    const errors: Record<string, string> = {};
+    if (!customerName.trim()) {
+      errors.name = 'Nama pemesan wajib diisi';
+    }
+    if (!tableNumber) {
+      errors.table = 'Nomor meja wajib dipilih';
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      return;
+    }
+
+    // Compile items for details screen
+    const itemsList = Object.entries(cart).map(([itemId, qty]) => {
+      const item = menuData.find(m => m.id === itemId);
+      return {
+        nama: item ? item.nama : 'Menu',
+        qty,
+        harga: item ? item.harga : 0
+      };
+    }).filter(i => i.qty > 0);
+
+    // Store details for success screen
+    setOrderSuccessDetails({
+      name: customerName.trim(),
+      table: tableNumber,
+      items: itemsList,
+      total: cartTotalPrice
+    });
+
+    // Reset state & close modal
+    setCart({});
+    setCustomerName('');
+    setTableNumber('');
+    setOrderNotes('');
+    setIsCartOpen(false);
+  };
 
   const filteredAndSortedMenu = useMemo(() => {
     let items = [...menuData] as MenuItem[];
@@ -157,7 +252,75 @@ export default function MenuPage() {
       background: 'var(--color-bg)',
       paddingBottom: 'calc(80px + env(safe-area-inset-bottom))',
     }}>
-      
+      <style dangerouslySetInnerHTML={{ __html: `
+        .floating-cart-bar {
+          position: fixed !important;
+          left: 50% !important;
+          transform: translateX(-50%) !important;
+          width: calc(100% - 32px) !important;
+          max-width: 358px !important;
+          background: var(--color-primary) !important;
+          color: white !important;
+          border-radius: var(--radius-lg) !important;
+          padding: 12px 16px !important;
+          box-shadow: var(--shadow-float) !important;
+          display: flex !important;
+          justify-content: space-between !important;
+          align-items: center !important;
+          z-index: 45 !important;
+          bottom: calc(76px + env(safe-area-inset-bottom, 16px)) !important;
+          transition: all var(--transition-normal) !important;
+          animation: cartFadeUp 300ms cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+        }
+
+        @media (min-width: 768px) {
+          .floating-cart-bar {
+            bottom: 24px !important;
+            max-width: 500px !important;
+            width: calc(100% - 48px) !important;
+          }
+        }
+
+        .cart-overlay {
+          position: fixed !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          bottom: 0 !important;
+          background: rgba(28, 25, 23, 0.6) !important;
+          backdrop-filter: blur(6px) !important;
+          z-index: var(--z-modal) !important;
+          display: flex !important;
+          justify-content: center !important;
+          align-items: flex-end !important;
+          animation: cartFadeIn 250ms ease-out forwards !important;
+        }
+
+        .cart-drawer {
+          background: var(--color-bg) !important;
+          border-top-left-radius: var(--radius-xl) !important;
+          border-top-right-radius: var(--radius-xl) !important;
+          width: 100% !important;
+          max-width: 500px !important;
+          max-height: 85vh !important;
+          display: flex !important;
+          flex-direction: column !important;
+          box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15) !important;
+          animation: cartSlideUp 350ms cubic-bezier(0.16, 1, 0.3, 1) forwards !important;
+        }
+
+        @media (min-width: 768px) {
+          .cart-overlay {
+            align-items: center !important;
+            padding: 24px !important;
+          }
+          .cart-drawer {
+            border-radius: var(--radius-xl) !important;
+            max-height: 90vh !important;
+            height: auto !important;
+          }
+        }
+      ` }} />
       {/* ── Sticky Header & Toolbar ── */}
       <div style={{
         position: 'sticky',
@@ -170,7 +333,7 @@ export default function MenuPage() {
       }}>
         <div style={{ margin: '0 auto', width: '100%', maxWidth: '100%', overflow: 'hidden' }}>
           {/* Top title and back button */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, padding: '0 16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justify_content: 'space-between', marginBottom: 16, padding: '0 16px' }}>
             <Link href="/" style={{
               width: 44,
               height: 44,
@@ -555,25 +718,118 @@ export default function MenuPage() {
                   </div>
                 </div>
 
-                {/* 3. Tag Chips */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-                  {item.tags.map((tag) => (
-                    <span 
-                      key={tag} 
-                      style={{
-                        background: '#F5F5F0',
-                        borderRadius: '999px',
-                        padding: '4px 10px',
-                        fontSize: '11px',
-                        color: '#78716C',
-                        fontWeight: 500,
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                      }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
+                {/* 3. Tags & Actions Row */}
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginTop: 'auto',
+                  gap: 8,
+                  paddingTop: 8,
+                  borderTop: '1px solid var(--color-border-light)'
+                }}>
+                  {/* Tags list (flexible wrap) */}
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, flex: 1 }}>
+                    {item.tags.slice(0, 2).map((tag) => (
+                      <span 
+                        key={tag} 
+                        style={{
+                          background: '#F5F5F0',
+                          borderRadius: '999px',
+                          padding: '3px 8px',
+                          fontSize: '10px',
+                          color: '#78716C',
+                          fontWeight: 500,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                        }}
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+
+                  {/* Cart Actions */}
+                  {item.tersedia ? (
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      {cart[item.id] ? (
+                        <div style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          background: 'white',
+                          border: '1px solid var(--color-primary)',
+                          borderRadius: '8px',
+                          overflow: 'hidden',
+                          height: '32px'
+                        }}>
+                          <button
+                            onClick={() => removeFromCart(item.id)}
+                            style={{
+                              border: 'none',
+                              background: 'none',
+                              padding: '0 8px',
+                              height: '100%',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                              color: 'var(--color-primary)',
+                            }}
+                          >
+                            <Minus size={14} strokeWidth={2.5} />
+                          </button>
+                          <span style={{
+                            padding: '0 4px',
+                            minWidth: '24px',
+                            textAlign: 'center',
+                            fontSize: '13px',
+                            fontWeight: 700,
+                            color: 'var(--color-text-primary)'
+                          }}>
+                            {cart[item.id]}
+                          </span>
+                          <button
+                            onClick={() => addToCart(item.id)}
+                            style={{
+                              border: 'none',
+                              background: 'none',
+                              padding: '0 8px',
+                              height: '100%',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                              color: 'var(--color-primary)',
+                            }}
+                          >
+                            <Plus size={14} strokeWidth={2.5} />
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          onClick={() => addToCart(item.id)}
+                          style={{
+                            background: 'white',
+                            border: '1px solid var(--color-primary)',
+                            color: 'var(--color-primary)',
+                            borderRadius: '8px',
+                            padding: '0 12px',
+                            height: '32px',
+                            fontSize: '12px',
+                            fontWeight: 700,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: 4,
+                            cursor: 'pointer',
+                            transition: 'all 0.15s ease'
+                          }}
+                        >
+                          <Plus size={12} strokeWidth={3} />
+                          <span>Tambah</span>
+                        </button>
+                      )}
+                    </div>
+                  ) : null}
                 </div>
               </div>
             );
@@ -627,6 +883,398 @@ export default function MenuPage() {
           </div>
         )}
       </main>
+
+      {/* Floating Bottom Cart Bar */}
+      {cartTotalItems > 0 && (
+        <div className="floating-cart-bar">
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.2)',
+              borderRadius: '8px',
+              padding: '6px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              position: 'relative'
+            }}>
+              <ShoppingCart size={18} color="white" />
+              <span style={{
+                position: 'absolute',
+                top: '-6px',
+                right: '-6px',
+                background: '#DC2626',
+                color: 'white',
+                fontSize: '10px',
+                fontWeight: 800,
+                borderRadius: '50%',
+                width: '16px',
+                height: '16px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                boxShadow: '0 1px 3px rgba(0,0,0,0.2)'
+              }}>
+                {cartTotalItems}
+              </span>
+            </div>
+            <div>
+              <div style={{ fontSize: '10px', fontWeight: 500, opacity: 0.9 }}>Total Pesanan</div>
+              <div style={{ fontSize: '14px', fontWeight: 800 }}>{formatRupiah(cartTotalPrice)}</div>
+            </div>
+          </div>
+          <button
+            onClick={() => setIsCartOpen(true)}
+            style={{
+              background: 'white',
+              color: 'var(--color-primary)',
+              border: 'none',
+              borderRadius: '8px',
+              padding: '8px 14px',
+              fontSize: '13px',
+              fontWeight: 700,
+              cursor: 'pointer',
+              boxShadow: '0 2px 4px rgba(0,0,0,0.06)'
+            }}
+          >
+            Lihat Keranjang
+          </button>
+        </div>
+      )}
+
+      {/* Cart Modal / Drawer */}
+      {isCartOpen && (
+        <div className="cart-overlay" onClick={() => setIsCartOpen(false)}>
+          <div className="cart-drawer" onClick={(e) => e.stopPropagation()}>
+            {/* Header */}
+            <div style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              padding: '16px',
+              borderBottom: '1px solid var(--color-border-light)'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <ShoppingCart size={20} color="var(--color-primary)" />
+                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 800 }}>Keranjang Belanja</h3>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                <button
+                  onClick={clearCart}
+                  style={{
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--color-error)',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4
+                  }}
+                >
+                  <Trash2 size={14} />
+                  <span>Kosongkan</span>
+                </button>
+                <button
+                  onClick={() => setIsCartOpen(false)}
+                  style={{
+                    background: '#F5F5F0',
+                    border: 'none',
+                    borderRadius: '50%',
+                    width: '32px',
+                    height: '32px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    cursor: 'pointer',
+                    color: '#57534E'
+                  }}
+                >
+                  <X size={16} strokeWidth={2.5} />
+                </button>
+              </div>
+            </div>
+
+            {/* Scrollable Body */}
+            <div style={{
+              flex: 1,
+              overflowY: 'auto',
+              padding: '16px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 16
+            }} className="hide-scrollbar">
+              {/* Item List */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <div style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', color: 'var(--color-text-muted)', letterSpacing: '0.05em' }}>
+                  Item Pesanan
+                </div>
+                {Object.entries(cart).map(([itemId, qty]) => {
+                  const item = menuData.find(m => m.id === itemId);
+                  if (!item) return null;
+                  return (
+                    <div key={itemId} style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      background: 'white',
+                      padding: '12px',
+                      borderRadius: '12px',
+                      border: '0.5px solid var(--color-border)'
+                    }}>
+                      <div style={{ flex: 1, marginRight: 12 }}>
+                        <div style={{ fontSize: '14px', fontWeight: 700, color: 'var(--color-text-primary)' }}>{item.nama}</div>
+                        <div style={{ fontSize: '12px', color: 'var(--color-primary)', fontWeight: 600 }}>{formatRupiah(item.harga)}</div>
+                      </div>
+                      
+                      {/* Quantity Selector */}
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        background: '#F5F5F0',
+                        borderRadius: '8px',
+                        overflow: 'hidden',
+                        height: '32px'
+                      }}>
+                        <button
+                          onClick={() => removeFromCart(itemId)}
+                          style={{
+                            border: 'none',
+                            background: 'none',
+                            padding: '0 8px',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            color: '#57534E',
+                          }}
+                        >
+                          <Minus size={13} strokeWidth={2.5} />
+                        </button>
+                        <span style={{
+                          padding: '0 4px',
+                          minWidth: '24px',
+                          textAlign: 'center',
+                          fontSize: '12.5px',
+                          fontWeight: 700,
+                          color: 'var(--color-text-primary)'
+                        }}>
+                          {qty}
+                        </span>
+                        <button
+                          onClick={() => addToCart(itemId)}
+                          style={{
+                            border: 'none',
+                            background: 'none',
+                            padding: '0 8px',
+                            height: '100%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            cursor: 'pointer',
+                            color: '#57534E',
+                          }}
+                        >
+                          <Plus size={13} strokeWidth={2.5} />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Form Info */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 12, marginTop: 4 }}>
+                <div style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', color: 'var(--color-text-muted)', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <ClipboardList size={12} />
+                  <span>Informasi Pemesan</span>
+                </div>
+
+                {/* Nama Pemesan */}
+                <div>
+                  <label htmlFor="customerName" className="input-label" style={{ fontSize: '12px', fontWeight: 600 }}>Nama Pemesan <span style={{ color: 'var(--color-error)' }}>*</span></label>
+                  <input
+                    id="customerName"
+                    type="text"
+                    placeholder="Masukkan nama Anda"
+                    value={customerName}
+                    onChange={(e) => {
+                      setCustomerName(e.target.value);
+                      if (formErrors.name) {
+                        setFormErrors(prev => ({ ...prev, name: '' }));
+                      }
+                    }}
+                    className={`input ${formErrors.name ? 'error' : ''}`}
+                    style={{ height: '44px', fontSize: '14px', borderRadius: '10px' }}
+                  />
+                  {formErrors.name && <div className="input-error" style={{ fontSize: '11px', marginTop: 2 }}>{formErrors.name}</div>}
+                </div>
+
+                {/* Nomor Meja Selection */}
+                <div>
+                  <label htmlFor="tableNumber" className="input-label" style={{ fontSize: '12px', fontWeight: 600 }}>Nomor Meja <span style={{ color: 'var(--color-error)' }}>*</span></label>
+                  <select
+                    id="tableNumber"
+                    value={tableNumber}
+                    onChange={(e) => {
+                      setTableNumber(e.target.value);
+                      if (formErrors.table) {
+                        setFormErrors(prev => ({ ...prev, table: '' }));
+                      }
+                    }}
+                    className={`input ${formErrors.table ? 'error' : ''}`}
+                    style={{ 
+                      height: '44px', 
+                      fontSize: '14px', 
+                      borderRadius: '10px',
+                      background: '#F5F5F0',
+                      paddingRight: '32px',
+                    }}
+                  >
+                    <option value="">Pilih Nomor Meja (1-15)</option>
+                    {Array.from({ length: 15 }, (_, i) => i + 1).map((num) => (
+                      <option key={num} value={num}>Meja {num}</option>
+                    ))}
+                  </select>
+                  {formErrors.table && <div className="input-error" style={{ fontSize: '11px', marginTop: 2 }}>{formErrors.table}</div>}
+                </div>
+
+                {/* Catatan Pesanan */}
+                <div>
+                  <label htmlFor="orderNotes" className="input-label" style={{ fontSize: '12px', fontWeight: 600 }}>Catatan Pesanan (Opsional)</label>
+                  <textarea
+                    id="orderNotes"
+                    placeholder="Contoh: Es kopi manis sedang, sendok tambahan..."
+                    value={orderNotes}
+                    onChange={(e) => setOrderNotes(e.target.value)}
+                    className="input"
+                    style={{ 
+                      height: '76px', 
+                      fontSize: '14px', 
+                      borderRadius: '10px', 
+                      padding: '10px 14px',
+                      resize: 'none',
+                      lineHeight: '1.4'
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+
+            {/* Sticky Footer */}
+            <div style={{
+              padding: '16px',
+              borderTop: '1px solid var(--color-border-light)',
+              background: 'white',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 12
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Total Pembayaran:</span>
+                <span style={{ fontSize: '18px', fontWeight: 800, color: 'var(--color-primary)' }}>{formatRupiah(cartTotalPrice)}</span>
+              </div>
+              <button
+                onClick={handleCheckout}
+                className="btn btn-primary"
+                style={{ height: '48px', fontSize: '14px', fontWeight: 700, borderRadius: '10px' }}
+              >
+                Kirim Pesanan
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Order Success Modal */}
+      {orderSuccessDetails && (
+        <div className="cart-overlay" style={{ alignItems: 'center', padding: '24px' }}>
+          <div className="card animate-fade-in-up" style={{
+            background: 'var(--color-bg)',
+            borderRadius: '24px',
+            width: '100%',
+            maxWidth: '400px',
+            padding: '28px 24px',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.12)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            border: 'none'
+          }}>
+            {/* Success Icon */}
+            <div style={{
+              width: '64px',
+              height: '64px',
+              borderRadius: '50%',
+              background: 'var(--color-success-light)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '16px',
+              color: 'var(--color-success)'
+            }} className="animate-check">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </div>
+
+            <h3 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--color-text-primary)', margin: '0 0 8px 0' }}>
+              Pesanan Dikirim!
+            </h3>
+            
+            <p style={{ fontSize: '13.5px', color: 'var(--color-text-secondary)', margin: '0 0 20px 0', lineHeight: 1.5 }}>
+              Halo Rakan <strong>{orderSuccessDetails.name}</strong>, pesananmu untuk <strong>Meja {orderSuccessDetails.table}</strong> telah kami terima dan sedang dipersiapkan.
+            </p>
+
+            {/* Order Brief Summary */}
+            <div style={{
+              width: '100%',
+              background: 'white',
+              border: '1px solid var(--color-border)',
+              borderRadius: '16px',
+              padding: '16px',
+              marginBottom: '24px',
+              textAlign: 'left'
+            }}>
+              <div style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: 'var(--color-text-muted)', marginBottom: '8px', letterSpacing: '0.05em' }}>
+                Ringkasan Pesanan
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '120px', overflowY: 'auto', paddingRight: '4px' }} className="hide-scrollbar">
+                {orderSuccessDetails.items.map((item, idx) => (
+                  <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
+                    <span style={{ color: 'var(--color-text-secondary)' }}>
+                      <strong>{item.qty}x</strong> {item.nama}
+                    </span>
+                    <span style={{ fontWeight: 600, color: 'var(--color-text-primary)' }}>
+                      {formatRupiah(item.harga * item.qty)}
+                    </span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ borderTop: '1px dashed var(--color-border)', marginTop: '12px', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Total Pembayaran:</span>
+                <span style={{ fontSize: '15px', fontWeight: 800, color: 'var(--color-primary)' }}>{formatRupiah(orderSuccessDetails.total)}</span>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setOrderSuccessDetails(null)}
+              className="btn btn-primary"
+              style={{
+                height: '46px',
+                fontSize: '14px',
+                fontWeight: 700,
+                borderRadius: '12px',
+                width: '100%'
+              }}
+            >
+              Kembali ke Menu
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Floating Bottom Nav */}
       <Navbar />
