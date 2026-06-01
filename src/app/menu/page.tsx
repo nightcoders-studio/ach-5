@@ -1243,7 +1243,7 @@ export default function MenuPage() {
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', maxHeight: '120px', overflowY: 'auto', paddingRight: '4px' }} className="hide-scrollbar">
                 {orderSuccessDetails.items.map((item, idx) => (
-                  <div key={idx} style={{ display: 'flex', justify_content: 'space-between', fontSize: '13px' }}>
+                  <div key={idx} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
                     <span style={{ color: 'var(--color-text-secondary)' }}>
                       <strong>{item.qty}x</strong> {item.nama}
                     </span>
@@ -1253,7 +1253,7 @@ export default function MenuPage() {
                   </div>
                 ))}
               </div>
-              <div style={{ borderTop: '1px dashed var(--color-border)', marginTop: '12px', paddingTop: '10px', display: 'flex', justify_content: 'space-between', alignItems: 'center' }}>
+              <div style={{ borderTop: '1px dashed var(--color-border)', marginTop: '12px', paddingTop: '10px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-text-secondary)' }}>Total Pembayaran:</span>
                 <span style={{ fontSize: '15px', fontWeight: 800, color: 'var(--color-primary)' }}>{formatRupiah(orderSuccessDetails.total)}</span>
               </div>
