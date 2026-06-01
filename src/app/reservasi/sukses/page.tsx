@@ -1,7 +1,7 @@
 'use client';
 
 import { useSearchParams } from 'next/navigation';
-import { Suspense } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { CheckCircle2, User, Calendar, TableProperties, Users, MessageSquare, Copy, Home, UtensilsCrossed } from 'lucide-react';
 
@@ -13,6 +13,8 @@ function formatTanggal(dateStr: string): string {
 
 function SuksesContent() {
   const params = useSearchParams();
+  const [copied, setCopied] = useState(false);
+  const [qrUrl, setQrUrl] = useState('');
 
   const kode = params.get('kode') || 'WK-0000';
   const nama = params.get('nama') || '-';
@@ -22,9 +24,18 @@ function SuksesContent() {
   const orang = params.get('orang') || '-';
   const catatan = params.get('catatan') || '';
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const url = `${window.location.origin}/reservasi/sukses?kode=${encodeURIComponent(kode)}&nama=${encodeURIComponent(nama)}&tanggal=${encodeURIComponent(tanggal)}&waktu=${encodeURIComponent(waktu)}&meja=${encodeURIComponent(meja)}&orang=${encodeURIComponent(orang)}${catatan ? `&catatan=${encodeURIComponent(catatan)}` : ''}`;
+      setQrUrl(url);
+    }
+  }, [kode, nama, tanggal, waktu, meja, orang, catatan]);
+
   const handleCopyKode = async () => {
     try {
       await navigator.clipboard.writeText(kode);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
     } catch {
       // silently fail
     }
@@ -103,8 +114,8 @@ function SuksesContent() {
           <button
             onClick={handleCopyKode}
             style={{
-              background: 'rgba(255,255,255,0.18)',
-              border: '1px solid rgba(255,255,255,0.3)',
+              background: copied ? 'rgba(34, 197, 94, 0.3)' : 'rgba(255,255,255,0.18)',
+              border: copied ? '1px solid rgba(34, 197, 94, 0.5)' : '1px solid rgba(255,255,255,0.3)',
               borderRadius: 10,
               padding: '8px 12px',
               display: 'flex',
@@ -114,11 +125,56 @@ function SuksesContent() {
               color: 'white',
               fontSize: 12,
               fontWeight: 600,
+              transition: 'all 0.2s ease',
             }}
           >
-            <Copy size={14} />
-            Salin
+            {copied ? (
+              <>
+                <span style={{ fontSize: 13, lineHeight: 1 }}>✓</span>
+                Tersalin
+              </>
+            ) : (
+              <>
+                <Copy size={14} />
+                Salin
+              </>
+            )}
           </button>
+        </div>
+
+        {/* ── QR Code Card ── */}
+        <div style={{
+          background: 'white',
+          borderRadius: 16,
+          border: '1px solid var(--color-border)',
+          padding: '16px',
+          marginBottom: 16,
+          textAlign: 'center',
+          boxShadow: 'var(--shadow-card)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 10,
+        }}>
+          <div style={{
+            background: '#F5F5F0',
+            padding: '10px',
+            borderRadius: 12,
+            border: '1px solid var(--color-border-light)',
+            display: 'inline-block',
+          }}>
+            <img 
+              src={`https://api.qrserver.com/v1/create-qr-code/?size=120x120&color=c2660a&data=${encodeURIComponent(qrUrl || kode)}`} 
+              alt="QR Kode Booking"
+              width={120}
+              height={120}
+              style={{ display: 'block', borderRadius: 6 }}
+            />
+          </div>
+          <p style={{ fontSize: 12, color: 'var(--color-text-secondary)', margin: 0, fontWeight: 600 }}>
+            Scan di Kasir untuk Check-In
+          </p>
         </div>
 
         {/* ── Detail Reservasi ── */}
