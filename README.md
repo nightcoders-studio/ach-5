@@ -1,7 +1,9 @@
 <!-- KUPITA -->
 <div align="center">
 
-# ☕ KUPITA
+<img src="public/smart-coffee.svg" alt="KUPITA Logo" width="180" />
+
+# KUPITA
 
 ### *Kopi Untuk Pikiran Terindah Anda*
 
@@ -211,7 +213,7 @@ Dibuat dengan ☕ oleh **Night Coders Studio** untuk **Aceh Hackathon 2026**.
 
 ## 📄 Lisensi
 
-MIT License — bebas digunakan dan dimodifikasi.
+[MIT License](LICENSE) — bebas digunakan dan dimodifikasi.
 
 ---
 

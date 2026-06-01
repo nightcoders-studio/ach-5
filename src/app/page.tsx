@@ -26,8 +26,16 @@ export default function LandingPage() {
       <header className="animate-fade-in-up" style={{ padding: '52px 20px 28px', textAlign: 'center' }}>
 
         {/* Cafe identity */}
-        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 14 }}>
-          <Coffee size={52} color="var(--color-primary)" strokeWidth={1.5} />
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 16 }}>
+          <img 
+            src="/smart-coffee.svg" 
+            alt="KUPITA Logo" 
+            style={{ 
+              height: 84, 
+              width: 'auto',
+              filter: 'drop-shadow(0 6px 16px oklch(0.66 0.155 75 / 0.15))'
+            }} 
+          />
         </div>
         <h1 style={{ fontSize: 30, fontWeight: 800, letterSpacing: '-0.03em', marginBottom: 6 }}>
           KUPITA
